@@ -10,7 +10,7 @@
 <body>
     <header class="main-header">
         <a href="./index.html">
-            <img src="./Images/Logo.png" alt="Logo"> <!-- Update the logo path -->
+        <img src="./Images/Logo.png" alt="Logo"> <!-- Update the logo path -->
         </a>
         <h1>Trend Analysis Across Diverse Fields</h1>
         <button class="menu-button" onclick="toggleMenu()">☰</button>
@@ -27,39 +27,13 @@
             <button onclick="window.location.href='./team.html'">Team</button>
         </div>
     </div>
-    
-    <div id="file-info"></div>
-    
+
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
         }
-        
-        window.onload = function() {
-            const username = 'Manidatta1'; // Your GitHub username
-            const repoName = 'Trend-Analysis-across-diverse-fields'; // Your repository name
-            const filePath = 'Introduction.txt'; // Path to your file
-            const url = `https://api.github.com/repos/${username}/${repoName}/contents/${filePath}`;
-
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('File not found or repository not accessible');
-                    }
-                    return response.json(); // Use .json() to get the base64 content
-                })
-                .then(data => {
-                    const fileContent = atob(data.content); // Decode the base64 content
-                    document.getElementById('file-info').innerHTML = `
-                        <h2>${data.name}</h2>
-                        <pre>${fileContent}</pre>
-                    `;
-                })
-                .catch(error => {
-                    document.getElementById('file-info').innerHTML = `<p>${error.message}</p>`;
-                });
-        };
     </script>
+
 </body>
 </html>
