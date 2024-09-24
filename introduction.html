@@ -27,35 +27,27 @@
             <button onclick="window.location.href='./team.html'">Team</button>
         </div>
     </div>
-
+    <div id="file-info"></div>
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
         }
-        document.getElementById('fetch-file').onclick = function() {
+        window.onload = function() {
             const username = 'Manidatta1'; // Replace with your GitHub username
-            const repoName = 'Trend-Analysis-across-diverse-fields';      // Replace with your repository name
+            const repoName = 'Trend-Analysis-across-diverse-fields'; // Replace with your repository name
             const filePath = 'Introduction.docx'; // Replace with the path to your file
-            const url = `https://api.github.com/repos/${username}/${repoName}/contents/${filePath}`;
+            const url = `https://raw.githubusercontent.com/${username}/${repoName}/main/${filePath}`;
 
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('File not found or repository not accessible');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const fileContent = atob(data.content); // Decode the base64 content
-                    document.getElementById('file-info').innerHTML = `
-                        <h2>${data.name}</h2>
-                        <pre>${fileContent}</pre>
-                    `;
-                })
-                .catch(error => {
-                    document.getElementById('file-info').innerHTML = `<p>${error.message}</p>`;
-                });
+            // Create a link to download the file
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filePath; // This will prompt a download
+            link.innerText = 'Download Introduction.docx';
+            
+            // Append to the file-info div
+            document.getElementById('file-info').innerHTML = '';
+            document.getElementById('file-info').appendChild(link);
         };
     </script>
 
