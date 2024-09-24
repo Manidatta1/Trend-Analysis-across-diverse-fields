@@ -33,6 +33,30 @@
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
         }
+        document.getElementById('fetch-file').onclick = function() {
+            const username = 'Manidatta1'; // Replace with your GitHub username
+            const repoName = 'Trend-Analysis-across-diverse-fields';      // Replace with your repository name
+            const filePath = 'Introduction.docx'; // Replace with the path to your file
+            const url = `https://api.github.com/repos/${username}/${repoName}/contents/${filePath}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('File not found or repository not accessible');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const fileContent = atob(data.content); // Decode the base64 content
+                    document.getElementById('file-info').innerHTML = `
+                        <h2>${data.name}</h2>
+                        <pre>${fileContent}</pre>
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('file-info').innerHTML = `<p>${error.message}</p>`;
+                });
+        };
     </script>
 
 </body>
