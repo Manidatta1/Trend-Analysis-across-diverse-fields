@@ -39,15 +39,22 @@
             const filePath = 'Introduction.docx'; // Replace with the path to your file
             const url = `https://raw.githubusercontent.com/${username}/${repoName}/main/${filePath}`;
 
-            // Create a link to download the file
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filePath; // This will prompt a download
-            link.innerText = 'Download Introduction.docx';
-            
-            // Append to the file-info div
-            document.getElementById('file-info').innerHTML = '';
-            document.getElementById('file-info').appendChild(link);
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('File not found or repository not accessible');
+                    }
+                    return response.arrayBuffer();
+                })
+                .then(arrayBuffer => {
+                    return mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+                })
+                .then(result => {
+                    document.getElementById('file-info').innerHTML = result.value; // Display the content
+                })
+                .catch(error => {
+                    document.getElementById('file-info').innerHTML = `<p>${error.message}</p>`;
+                });
         };
     </script>
 
