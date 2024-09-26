@@ -9,7 +9,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: rgb(245, 118, 33);
+    background-color: white;
     background-size: cover;
     background-position: center;
     color: #333; /* Dark text for better readability */
@@ -149,43 +149,26 @@ body {
     opacity: 1; /* Show icon on hover */
 }
 
-.team-section {
-    align-items: center;
-    text-align: center;/* Center-align text */
-    margin: 20px 0; /* Space above and below the section */
+.content-area {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
 }
-
-.team-section h2 {
-    font-size: 2em;
-    margin-bottom: 30px; /* Space below the heading */
+.paragraph-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 10px;
 }
-
-.team-container {
-    display: flex; /* Use flexbox for a row layout */
-    justify-content: center; /* Center the team members */
-    gap: 40px; /* Space between team members */
+.paragraph-container img {
+    width: 50%; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 15px; /* Space between image and text */
+    margin-left: 15px;
+    margin-top: 15px;
 }
-
-.team-member {
-    background-color: rgba(255, 255, 255, 0.8); /* Background color */
-    padding: 20px; /* Padding around the member info */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    width: 250px; /* Set a fixed width */
-    max-height: 450px;
-}
-
-.team-member img {
-    max-width: 100%; /* Ensure image fits the container */
-    max-height: 60%;
-    border-radius: 50%; /* Circular images */
-}
-
-.team-member h3 {
-    margin: 10px 0 5px; /* Space above and below name */
-}
-
-.team-member p {
-    margin: 5px 0; /* Space between paragraphs */
-    font-size: 0.85em; /* Slightly smaller font for details */
+.paragraph-container p {
+    flex: 1; /* Allow the paragraph to take remaining space */
+    text-align: justify;
 }
