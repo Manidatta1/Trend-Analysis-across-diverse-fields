@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Analysis Across Diverse Fields</title>
+    
+    <link rel="stylesheet" href="./Main.css">
+
+    
+</head>
+<body>
+    <header class="main-header">
+        <a href="./index.html">
+        <img src="./Images/Logo.png" alt="Logo"> <!-- Update the logo path -->
+        </a>
+        <h1>Trend Analysis Across Diverse Fields</h1>
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
+    </header>
+    
+    <div class="sidebar" id="sidebar">
+        <button class="close-button" onclick="toggleMenu()">×</button>
+        <div class="sidebar-options">
+            <button onclick="window.location.href='./index.html'">Home</button>
+            <button onclick="window.location.href='./introduction.html'">Introduction</button>
+            <button onclick="window.location.href='./dataexploration.html'">Data Exploration</button>
+            <button onclick="window.location.href='./modelsimplemented.html'">Models Implemented</button>
+            <button onclick="window.location.href='./conclusion.html'">Conclusion</button>
+            <button onclick="window.location.href='./team.html'">Team</button>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+    </script>
+
+</body>
+</html>

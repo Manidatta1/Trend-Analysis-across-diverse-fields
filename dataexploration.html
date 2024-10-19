@@ -6,11 +6,130 @@
     <title>Trend Analysis Across Diverse Fields</title>
     
     <link rel="stylesheet" href="./Main.css">
+
+    <style>
+        /* Additional styles for centering and image display */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh; /* Adjust as needed */
+            gap: 40px; /* Space between images */
+        }
+        .button-container img {
+            height: 400px; /* Set a specific height for both images */
+            width: auto; /* Maintain aspect ratio */
+            cursor: pointer;
+            transition: transform 0.2s; /* Smooth scaling */
+        }
+        .button-container img:hover {
+            transform: scale(1.1); /* Scale up on hover */
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed; /* Fixed positioning */
+            z-index: 1000; /* High z-index to ensure it is above other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Width of the modal */
+            height: 80%; /* Height auto to fit content */
+            max-height: 80%; /* Limit height */
+            overflow: auto; /* Allow scrolling if content is too tall */
+            position: relative; /* Position relative for close button */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Centering the heading */
+        .modal-content h2 {
+            text-align: center; /* Center the heading */
+        }
+        .image-container {
+            display: block; /* Change to block to stack images */
+            max-width: 80%; /* Adjust max-width as needed */
+        }
+        .field-images-container {
+            display: flex;
+            flex-direction: column;
+            width : 100%;
+            align-items: center;
+        }
+        .field-image {
+            width: 100%; /* Set width for two columns */
+            margin-bottom: 20px; /* Space below each image */
+            align-items: center;
+        }
+        .field-image img {
+            width: 100%; /* Responsive image */
+            height: auto; /* Maintain aspect ratio */
+        }
+        .field-image p {
+            text-align: center; /* Center the description */
+            margin-top: 10px; /* Space above description */
+            width: 90%;
+        }
+        /* Styles for the circular button modal */
+        .circular-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 70%; /* Size of the circular button container */
+            height: 70%; /* Size of the circular button container */
+            margin: 0 auto; /* Center the circular buttons container */
+        }
+        .circular-buttons button {
+            font-size: 25px;
+            position: absolute;
+            width: 150px; /* Diameter of each button */
+            height: 150px; /* Diameter of each button */
+            border-radius: 50%; /* Make buttons round */
+            border: none;
+            background-color: #4CAF50; /* Button color */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Remove transform transition */
+        }
+        .circular-buttons button:hover {
+            background-color: #293df7; /* Darker shade on hover */
+        }
+
+        #mydatasetModal p {
+
+        font-size: 20px;
+        }
+        /* Position buttons in a circle */
+        .button1 { transform: rotate(0deg) translate(200px) rotate(0deg); }
+        .button2 { transform: rotate(72deg) translate(200px) rotate(-72deg); }
+        .button3 { transform: rotate(144deg) translate(200px) rotate(-144deg); }
+        .button4 { transform: rotate(216deg) translate(200px) rotate(-216deg); }
+        .button5 { transform: rotate(288deg) translate(200px) rotate(-288deg); }
+    </style>
 </head>
 <body>
     <header class="main-header">
         <a href="./index.html">
-        <img src="./Images/Logo.png" alt="Logo"> <!-- Update the logo path -->
+            <img src="./Images/Logo.png" alt="Logo"> <!-- Update the logo path -->
         </a>
         <h1>Trend Analysis Across Diverse Fields</h1>
         <button class="menu-button" onclick="toggleMenu()">☰</button>
@@ -28,12 +147,280 @@
         </div>
     </div>
 
+    <div class="button-container">
+        <a href="#" id="data-preprocessing-link" onclick="openModal(event)">
+            <img src="./Images/Data_Preprocessing.png" alt="Data Preprocessing Steps"> <!-- Update image path -->
+        </a>
+        <a href="#" id="data-exploration-link" onclick="openCircularModal(event)">
+            <img src="./Images/Data_Exploration.png" alt="Data Exploration"> <!-- Update image path -->
+        </a>
+        <a href="#" id="data-sets-link" onclick="opendatasetModal(event)">
+            <img src="./Images/data_sets.jpg" alt="Data Exploration"> <!-- Update image path -->
+        </a>
+    </div>
+    
+    <div id="circularModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCircularModal()">&times;</span>
+            <h2>Select the Field to Explore</h2>
+            <div class="circular-buttons">
+                <button class="button1" onclick="buttonAction(1)">Weather</button>
+                <button class="button2" onclick="buttonAction(2)">Healthcare</button>
+                <button class="button3" onclick="buttonAction(3)">Environment</button>
+                <button class="button4" onclick="buttonAction(4)">Market</button>
+                <button class="button5" onclick="buttonAction(5)">Agriculture</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Data Preprocessing Steps</h2>
+            <p><b>1. Handling Missing Values:</b></p>
+            <p>These are null values in the dataset. They impact machine learning results and statistical analysis, leading to biased estimates. This occurs due to data collection issues or entry mistakes.</p>
+            <p>In this project, we handle them using <i>SimpleImputer</i> from scikit-learn. We replace missing values of numerical variables with the mean. We replace missing values of categorical variables with the most frequent item. We can also remove entire columns or rows that contain all null values.</p>
+            
+            <div class="image-container">
+                <img src="./Images/Handling_Missing_Values1.png" alt="Handling Missing Values Image 1">
+                <img src="./Images/Handling_Missing_Values2.png" alt="Handling Missing Values Image 2">
+            </div>
+            
+            <p><b>2. Encoding:</b></p>
+            <p>Encoding transforms categorical variables into numerical formats. Many algorithms can only process numerical input.</p>
+            <p>In this project, we use <i>LabelEncoder</i> from scikit-learn. Each category is assigned a unique integer value. For example, location names like India, USA, and New Zealand become 1, 2, and 3, respectively.</p>
+            <img src="./Images/Encoding.png" alt="Encoding Image">
+            
+            <p><b>3. Standardization:</b></p>
+            <p>This scales all numerical features. It ensures all features contribute equally to the analysis.</p>
+            <p>In this project, we use <i>StandardScaler</i> from scikit-learn for standardization.</p>
+            <img src="./Images/Standardization.png" alt="Standardization Image">
+            
+            <p><b>4. Dimensionality Reduction:</b></p>
+            <p>This reduces the number of features while retaining information. It helps with computational costs and improves model performance.</p>
+            <p>In this project, we use Random Forest regressor from scikit-learn. It calculates the importance of each feature based on how it reduces impurity when used for prediction.</p>
+            <img src="./Images/Dimensionality_Reduction.png" alt="Dimensionality Reduction Image">
+
+            <p><b>5. Removing Outliers:</b></p>
+            <p>Outliers are observations that lie outside the majority range. They can skew analysis and lead to misleading conclusions.</p>
+            <p>We use the Interquartile Range (IQR) technique to detect and remove outliers. IQR = Q3 - Q1, where Q3 is the median of the first half and Q1 is the median of the second half.</p>
+            <p>Points below Q1 - 1.5 * IQR and above Q3 + 1.5 * IQR are treated as outliers.</p>
+            <img src="./Images/Removing_Outliers.png" alt="Removing Outliers Image">
+        </div>
+    </div>
+
+
+    <div id="mydatasetModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closedatasetModal()">&times;</span>
+            <h2>DataSets before and after Preprocessing</h2>
+            <p><b>1. Healthcare Dataset</b></p>
+            <p>Before Preprocessing</p>
+            <div class="image-container">
+                <img src="./DataSet_Images/Health_Expenditures_before_preprocessing.png" alt="healthcare">
+                <img src="./DataSet_Images/Malaria_before_preprocessing.png" alt="healthcare">
+            </div>
+
+            <p>After Preprocessing</p>
+            <div class="image-container">
+                <img src="./DataSet_Images/Health_Expenditures_after_preprocessing.png" alt="healthcare">
+                <img src="./DataSet_Images/Malaria_after_preprocessing.png" alt="Healthcare">
+            </div>
+
+
+            
+        
+            
+            <p><b>2. Agriculture Dataset</b></p>
+            <p>Before Preprocessing</p>
+            <img src="./DataSet_Images/Agriculture_before_preprocessing.png" alt="agriculture">
+            
+            <p>After Preprocessing</p>
+            <img src="./DataSet_Images/Agriculture_after_preprocessing.png" alt="agriculture">
+            
+            <p><b>3. Environment Dataset</b></p>
+            <p>Before Preprocessing</p>
+            <img src="./DataSet_Images/Environment_before_preprocessing.png" alt="environment">
+
+            <p>After Preprocessing</p>
+            <img src="./DataSet_Images/Environment_after_preprocessing.png" alt="environment">
+            
+            <p><b>4. Weather Dataset</b></p>
+            <p>Before Preprocessing</p>
+           <img src="./DataSet_Images/weather_Before_Preprocessing.png" alt="weather">
+
+           <p>After Preprocessing</p>
+           <img src="./DataSet_Images/weather_after_preprocessing.png" alt="weather">
+
+            <p><b>5. Market Dataset</b></p>
+            <p>Before Preprocessing</p>
+            <img src="./DataSet_Images/market_before_preprocessing.png" alt="market">
+
+            <p>After Preprocessing</p>
+            <img src="./DataSet_Images/market_after_preprocessing.png" alt="market">
+        </div>
+    </div>
+
+    <div id="fieldModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closefieldModal()">&times;</span>
+            <h2>Data Visualization</h2>
+            <button onclick="showSelection(event)" style="margin-bottom: 20px;">Back</button>
+            <div id="fieldImages" class="field-images-container"></div>
+        </div>
+    </div>
+
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
+            sidebar.style.display = (sidebar.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function openModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("myModal");
+            modal.style.display = "flex"; // Show the modal
+        }
+
+        function opendatasetModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("mydatasetModal");
+            modal.style.display = "flex"; // Show the modal
+        }
+
+        function closedatasetModal(){
+            const modal = document.getElementById("mydatasetModal");
+            modal.style.display = "none"; // Hide the modal
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("myModal");
+            modal.style.display = "none"; // Hide the modal
+        }
+
+        function openCircularModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("circularModal");
+            modal.style.display = "flex"; // Show the circular modal
+        }
+
+        function closeCircularModal() {
+            const modal = document.getElementById("circularModal");
+            modal.style.display = "none"; // Hide the circular modal
+        }
+
+        function closefieldModal() {
+            const modal = document.getElementById("fieldModal");
+            modal.style.display = "none"; // Hide the circular modal
+        }
+
+        function showSelection(event) {
+            event.preventDefault(); // Prevent default behavior
+            const fieldModal = document.getElementById('fieldModal');
+            fieldModal.style.display = 'none'; // Hide the field modal
+            const circularModal = document.getElementById('circularModal');
+            circularModal.style.display = 'flex'; // Show the circular modal
+        }
+
+        function buttonAction(step) {
+            const fieldImages = document.getElementById('fieldImages');
+            fieldImages.innerHTML = ''; // Clear previous images
+            let images = [];
+            let descriptions = [];
+
+            switch (step) {
+                case 1:
+                    images = ['Data_Visualization_Images/weather1.png', 'Data_Visualization_Images/weather2.png','Data_Visualization_Images/weather4.png','Data_Visualization_Images/weather3.png','Data_Visualization_Images/weather5.png']; // Update paths
+                    descriptions = [
+                        "The scatter plot illustrates the distribution of maximum temperatures recorded during the summer months (June, July, and August) for the top 10 U.S. cities with the highest average temperatures in 2023. Each point on the plot represents a specific city's maximum temperature on a given day, enabling easy comparison of temperature variations among these cities.",
+                        "The line plot provides a clear visual representation of maximum temperatures recorded during the summer months of 2023 for the top 10 U.S. cities exhibiting the highest average temperatures during this period. Each line corresponds to a specific city, tracking its daily maximum temperature fluctuations throughout June, July, and August.",
+                        "The line plot provides a clear visual representation of minimum temperatures recorded during the summer months of 2023 for the top 10 U.S. cities exhibiting the highest average temperatures during this period. Each line corresponds to a specific city, tracking its daily minimum temperature fluctuations throughout June, July, and August.",
+                        "The Line Plots provides the Average summer Temperature in the city Madison from the year 2010 to 2023",
+                        "The violin plot provides a comprehensive visual representation of the distribution of average maximum and minimum temperatures for the top cities during the winter months from 2020 to 2023. The shape of the violin illustrates how temperature values are spread across the winter season, indicating peaks where temperatures are most frequently recorded, while the wider sections of the plot signify greater frequency of occurrence at those temperature levels. This dual representation allows for easy comparisons between maximum and minimum temperatures across different cities, highlighting variations that may arise due to geographical, climatic, or urban factors."
+                        
+                    ];
+                    break;
+                case 2:
+                    images = ['Data_Visualization_Images/healthcare1.jpg','Data_Visualization_Images/healthcare2.jpg','Data_Visualization_Images/healthcare3.jpg','Data_Visualization_Images/healthcare4.jpg'];
+                    descriptions = [
+                        "The pattern in the plot shows that South Africa received the large amount of money from Internal transfers and grants for health expenditure when compared to other countries over the years. On the other hand, remaining countries on an average received the constant amount of money from Internal transfers and grants i.e around 0 to 2500 US Million Dollars. ",
+                        "The pattern in the above plot shows that France and Canada has the large amount of health expenditures i.e around 10,000,000 Million US dollars when compared with other countries indicating that a large amount of funds required from various for these countries. While Countries like Albania, Algeria, Angola, Cuba, Jamaica, Kuwait, Samoa has the least health expenditures.",
+                        "The above histogram indicates that there are around 1650 regions having malaria cases in the range of 0-100 while only around 5 regions have the malaria cases in the range 500-700.",
+                        "The above plot shows that the Africa affected with the most number of malaria cases i.e. around 1050 while South-East Asia, Western Pacific and Europe has the malaria cases around 220 indicating that more medical equipment is needed in Europe."
+                    ];
+                    break;
+                case 3:
+                    images = ['Data_Visualization_Images/environment1.jpg','Data_Visualization_Images/environment2.jpg'];
+                    descriptions = [
+                        "The pattern in the above plot indicates that on an average 40 to 60 Million Tons of CH4 gases emitted from 1990 to 2004 and had the sudden increase in 2005 to 115 tons and again decreased to around 25 tons in the subsequent years.",
+                        "The above plots indicates that around 0 to 20000 million cubic meters of fresh water is abstracted from 1990 to 1997 and it increased to around 58000 million cubic meters in 1999 and made some constant variations for the subsequent years reaching around 70000 million cubic meters by 2020."
+                    ];
+                    break;
+                case 4:
+                    images = ['Data_Visualization_Images/market1.jpg','Data_Visualization_Images/market2.jpg','Data_Visualization_Images/market3.jpg','Data_Visualization_Images/market4.jpg'];
+                    descriptions = [
+                        "From the visualization, we can observe the average GDP growth rate for G20 countries between 2013 and 2023. There was relatively stable GDP growth between 2013 and 2019, followed by a sharp decline in 2020.",
+                       "This bar plot shows the inflation rates for G20 countries in 2023..This plot highlights the inflation variability across G20 countries in 2023, reflecting differing economic conditions and responses to global economic challenges. The United Kingdom and South Africa have the highest inflation rates, both nearing 7%.",
+                       "From this visualization, we can observe the sector-wise contributions to U.S. GDP from 2013 to 2023. Additionally, both the U.S. GDP and World GDP have steadily grown over the same period, with the U.S. GDP consistently higher than the global average.",
+                       "A pie chart is created using the computed average contributions for each sector.The average sector contributions (agriculture, industry, and services) are computed over the last 5 years (2018-2022)."
+                    ];
+                    break;
+                case 5:
+                    images = ['Data_Visualization_Images/agriculture1.jpg','Data_Visualization_Images/agriculture2.jpg'];
+                    descriptions = [
+                        "The pattern in the above plot indicates that the 100000 – 500000 Tons of crop grown in the years 2016 and 2017 while the amount is decreased as the years passes. ",
+                        "The pattern in the above plot indicates that CORN, HAY, COTTON, SOYABEANS, WHEAT are grown more than 1,000,000 Tons in USA from 2016 to 2023. The Crops like HOPS, BLUEBERRIES, PEAS, STRAWBERRIES, SUNFLOWER are grown least i.e. around 200,000 Tons."
+                    ];
+                    break;
+            }
+
+            // Create a container for images and descriptions
+            const container = document.createElement('div');
+            container.className = 'field-images-container';
+
+            // Create image elements with descriptions
+            images.forEach((src, index) => {
+                const div = document.createElement('div');
+                div.className = 'field-image';
+                
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = "Field Image"; // Update alt text as needed
+                
+                const p = document.createElement('p');
+                p.textContent = descriptions[index]; // Set the description text
+
+                div.appendChild(img);
+                div.appendChild(p);
+                container.appendChild(div);
+            });
+
+            // Append the container to the fieldImages
+            fieldImages.appendChild(container);
+
+            // Hide the circular modal and show the field modal
+            closeCircularModal();
+            const fieldModal = document.getElementById('fieldModal');
+            fieldModal.style.display = 'flex'; // Show the field information modal
+        }
+
+        // Close modals when clicking outside of them
+        window.onclick = function(event) {
+            const modal = document.getElementById("myModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+
+            const circularModal = document.getElementById("circularModal");
+            if (event.target === circularModal) {
+                circularModal.style.display = "none";
+            }
+
+            const fieldModal = document.getElementById("fieldModal");
+            if (event.target === fieldModal) {
+                fieldModal.style.display = "none";
+            }
         }
     </script>
-
 </body>
 </html>
