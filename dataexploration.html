@@ -25,6 +25,32 @@
         .button-container img:hover {
             transform: scale(1.1); /* Scale up on hover */
         }
+
+        @media (max-width: 1366px) and (min-width: 1024px) {
+        .button-container img {
+            height: 260px; /* Adjust image height */
+            gap: 20px
+        }
+    }
+
+    /* Media Query for smaller screens (e.g., 768px tablets, smaller laptops) */
+    @media (max-width: 1024px) {
+
+        .button-container img {
+            height: 200px; /* Adjust image height further */
+            gap: 20px;
+        }
+    }
+
+    /* Media Query for very small screens (e.g., 600px mobile devices) */
+    @media (max-width: 600px) {
+        .button-container img {
+            height: 150px; /* Further reduce image height */
+        }
+    }
+
+
+
         /* Modal styles */
         .modal {
             display: none;
@@ -110,6 +136,63 @@
             cursor: pointer;
             transition: background-color 0.3s; /* Remove transform transition */
         }
+
+
+        .button1 { transform: rotate(0deg) translate(200px) rotate(0deg); }
+        .button2 { transform: rotate(72deg) translate(200px) rotate(-72deg); }
+        .button3 { transform: rotate(144deg) translate(200px) rotate(-144deg); }
+        .button4 { transform: rotate(216deg) translate(200px) rotate(-216deg); }
+        .button5 { transform: rotate(288deg) translate(200px) rotate(-288deg); }
+
+
+        @media (max-width: 1366px) and (min-width: 1024px) {
+    .circular-buttons button {
+        font-size: 18px;
+        width: 110px; /* Diameter of each button */
+        height: 110px; /* Diameter of each button */
+    }
+
+    .button1 { transform: rotate(0deg) translate(130px) rotate(0deg); }
+    .button2 { transform: rotate(72deg) translate(130px) rotate(-72deg); }
+    .button3 { transform: rotate(144deg) translate(130px) rotate(-144deg); }
+    .button4 { transform: rotate(216deg) translate(130px) rotate(-216deg); }
+    .button5 { transform: rotate(288deg) translate(130px) rotate(-288deg); }
+}
+
+
+    /* Media Query for smaller screens (e.g., 768px tablets, smaller laptops) */
+    @media (max-width: 1024px) {
+
+        .circular-buttons button {
+        font-size: 16px;
+        width: 100px; /* Diameter of each button */
+        height: 100px; /* Diameter of each button */
+    }
+
+    .button1 { transform: rotate(0deg) translate(110px) rotate(0deg); }
+    .button2 { transform: rotate(72deg) translate(110px) rotate(-72deg); }
+    .button3 { transform: rotate(144deg) translate(110px) rotate(-144deg); }
+    .button4 { transform: rotate(216deg) translate(110px) rotate(-216deg); }
+    .button5 { transform: rotate(288deg) translate(110px) rotate(-288deg); }
+}
+    
+
+    /* Media Query for very small screens (e.g., 600px mobile devices) */
+    @media (max-width: 600px) {
+        
+        .circular-buttons button {
+        font-size: 13px;
+        width: 90px; /* Diameter of each button */
+        height: 90px; /* Diameter of each button */
+    }
+
+    .button1 { transform: rotate(0deg) translate(100px) rotate(0deg); }
+    .button2 { transform: rotate(72deg) translate(100px) rotate(-72deg); }
+    .button3 { transform: rotate(144deg) translate(100px) rotate(-144deg); }
+    .button4 { transform: rotate(216deg) translate(100px) rotate(-216deg); }
+    .button5 { transform: rotate(288deg) translate(100px) rotate(-288deg); }
+    }
+
         .circular-buttons button:hover {
             background-color: #293df7; /* Darker shade on hover */
         }
@@ -118,12 +201,6 @@
 
         font-size: 20px;
         }
-        /* Position buttons in a circle */
-        .button1 { transform: rotate(0deg) translate(200px) rotate(0deg); }
-        .button2 { transform: rotate(72deg) translate(200px) rotate(-72deg); }
-        .button3 { transform: rotate(144deg) translate(200px) rotate(-144deg); }
-        .button4 { transform: rotate(216deg) translate(200px) rotate(-216deg); }
-        .button5 { transform: rotate(288deg) translate(200px) rotate(-288deg); }
     </style>
 </head>
 <body>
@@ -224,7 +301,7 @@
             <p>After Preprocessing</p>
             <div class="image-container">
                 <img src="./DataSet_Images/Health_Expenditures_after_preprocessing.png" alt="healthcare">
-                <img src="./DataSet_Images/Malaria_after_preprocessing.png" alt="Healthcare">
+                <img src="./DataSet_Images/Malaria_after_preprocessing.jpg" alt="Healthcare">
             </div>
 
 
@@ -273,7 +350,7 @@
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
-            sidebar.style.display = (sidebar.style.display === 'block') ? 'none' : 'block';
+            sidebar.classList.toggle('open');
         }
 
         function openModal(event) {
@@ -366,10 +443,10 @@
                     ];
                     break;
                 case 5:
-                    images = ['Data_Visualization_Images/agriculture1.jpg','Data_Visualization_Images/agriculture2.jpg'];
+                    images = ['Data_Visualization_Images/agriculture_1.png','Data_Visualization_Images/agriculture_2.png'];
                     descriptions = [
-                        "The pattern in the above plot indicates that the 100000 – 500000 Tons of crop grown in the years 2016 and 2017 while the amount is decreased as the years passes. ",
-                        "The pattern in the above plot indicates that CORN, HAY, COTTON, SOYABEANS, WHEAT are grown more than 1,000,000 Tons in USA from 2016 to 2023. The Crops like HOPS, BLUEBERRIES, PEAS, STRAWBERRIES, SUNFLOWER are grown least i.e. around 200,000 Tons."
+                        "The plot above showcases the annual maize production for four distinct countries, spanning the years from 1960 to 2022. By displaying this data, the plot provides a clear visual representation of how maize production has varied over more than six decades in each country. ",
+                        "The line plot above depicts the per capita food supply trends from 1960 to 2022 for four distinct countries. It illustrates how the availability of food per person has evolved over the years, providing insights into the fluctuations in food supply across these nations during this time period."
                     ];
                     break;
             }

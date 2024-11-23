@@ -6,6 +6,94 @@
     <title>Trend Analysis Across Diverse Fields</title>
     
     <link rel="stylesheet" href="./Main.css">
+
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh; /* Adjust as needed */
+            gap: 40px; /* Space between images */
+        }
+        .button-container img {
+            height: 300px; /* Set a specific height for both images */
+            width: auto; /* Maintain aspect ratio */
+            cursor: pointer;
+            transition: transform 0.2s; /* Smooth scaling */
+        }
+        .button-container img:hover {
+            transform: scale(1.1); /* Scale up on hover */
+        }
+
+        @media (max-width: 1366px) and (min-width: 1024px) {
+        .button-container img {
+            height: 200px; /* Adjust image height */
+        }
+    }
+
+    /* Media Query for smaller screens (e.g., 768px tablets, smaller laptops) */
+    @media (max-width: 1024px) {
+
+        .button-container img {
+            height: 150px; /* Adjust image height further */
+            gap: 20px;
+        }
+    }
+
+    /* Media Query for very small screens (e.g., 600px mobile devices) */
+    @media (max-width: 600px) {
+        .button-container img {
+            height: 150px; /* Further reduce image height */
+        }
+    }
+
+        .modal {
+            display: none;
+            position: fixed; /* Fixed positioning */
+            z-index: 1000; /* High z-index to ensure it is above other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Width of the modal */
+            height: 80%; /* Height auto to fit content */
+            max-height: 80%; /* Limit height */
+            overflow: auto; /* Allow scrolling if content is too tall */
+            position: relative; /* Position relative for close button */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Centering the heading */
+        .modal-content h1 {
+            text-align: center; /* Center the heading */
+        }
+
+        .modal-content img {
+        display: block;       /* Makes the image a block element */
+        margin: 0 auto;       /* Centers the image horizontally */
+        max-width: 100%;      /* Ensures the image doesn't overflow the container */
+        height: auto;         /* Maintains the aspect ratio of the image */
+    }
+
+    </style>
 </head>
 <body>
     <header class="main-header">
@@ -28,10 +116,691 @@
         </div>
     </div>
 
+    <div class="button-container">
+        <a href="#" id="data-preprocessing-link" onclick="openAgricultureModal(event)">
+            <img src="./Images/Agriculture_model.jpg" alt="Agriculture Model"> <!-- Update image path -->
+        </a>
+        <a href="#" id="data-exploration-link" onclick="openWeatherModal(event)">
+            <img src="./Images/Weather_model.png" alt="Weather model"> <!-- Update image path -->
+        </a>
+        <a href="#" id="data-sets-link" onclick="openEnvironmentModal(event)">
+            <img src="./Images/Environment_model.png" alt="Environment model"> <!-- Update image path -->
+        </a>
+        <a href="#" id="data-sets-link" onclick="openHealthModal(event)">
+            <img src="./Images/Health_model.png" alt="Health Model"> <!-- Update image path -->
+        </a>
+        <a href="#" id="data-sets-link" onclick="openMarketModal(event)">
+            <img src="./Images/Market_model.jpg" alt="Market Model"> <!-- Update image path -->
+        </a>
+    </div>
+
+
+    <div id="myAgricultureModal" class="modal">
+        <div class="modal-content" style="background-color: rgb(250, 215, 169);">
+            <span class="close" onclick="closeAgricultureModal()">&times;</span>
+            <h1>Model Implemented : XGBoost Regressor</h1>
+            <p><b>Introduction</b></p>
+            <p>Maize production is a key factor in global food security, influencing economic stability and food availability in many countries. Accurate forecasting of maize production can help governments, farmers, and international organizations plan for future needs, manage resources, and mitigate risks related to food shortages. This report uses machine learning, specifically the XGBoost Regressor, to predict maize production for the year 2025 based on historical data from 1961 to 2021.</p>
+        
+            <p><b>Dataset Overview</b></p>
+            <p>The dataset includes detailed information on maize production across various countries, with indicators such as yield, production volume, food supply per capita, and population. The data covers the period from 1961 to 2021, providing a foundation for making predictions about maize production trends in the coming years.</p>
+
+            <p><b>Description of the Data</b></p>
+            <p>The dataset contains maize production data across multiple countries for the years 1961 to 2021.</p>
+            <p><b>Key columns:</b></p>
+            <ul>
+                <li>Country: The name of the country where maize production is recorded.</li>
+                <li>Year: The year of the record.</li>
+                <li>Production (t): Total maize production in tonnes for each country and year.</li>
+                <li>Population: The population of the country during the respective years.</li>
+                <li>Food supply (kg per capita per year): The amount of maize available for food consumption per capita.</li>
+                <li>Yield (t/ha): The yield of maize production per hectare in the country.</li>
+            </ul>
+
+            <p><b>Data Characteristics:</b></p>
+            <ul>
+                <li>Missing values were present in some columns such as Population, Yield, and Production, which were imputed with the mean value for each column.</li>
+                <li>Outliers in the production data were removed using the Interquartile Range (IQR) method to ensure better model performance and reliability.</li>
+            </ul>
+
+            <p><b>Pre-Processing</b></p>
+            <p>The following preprocessing steps were applied to prepare the data for modeling:</p>
+            <ul>
+                <li>Label Encoding: The categorical feature "Country" was encoded into numerical values using LabelEncoder. This is necessary for the XGBoost model to handle the categorical data.</li>
+                <li>Handling Missing Values: Missing values in numerical columns like Population, Yield, and Production were imputed by replacing them with the mean value of their respective columns.</li>
+                <li>Outlier Removal: Outliers in the production data were removed using the IQR method to prevent extreme values from negatively impacting the model.</li>
+            </ul>
+
+            <p><b>Model Selection and Training</b></p>
+            <p><b>XGBoost Regressor</b> is a powerful machine learning algorithm that is particularly effective for regression tasks. It builds an ensemble of decision trees using a boosting technique, where each new tree corrects the errors of the previous ones. This makes it well-suited for capturing complex patterns and interactions in the data.</p>
+
+            <p><b>Key Features:</b></p>
+            <ul>
+                <li>Boosting Technique: XGBoost uses gradient boosting to improve model accuracy by correcting the errors made by previous trees.</li>
+                <li>Handles Missing Values: The XGBoost algorithm can handle missing values natively, making it robust in cases where the dataset contains missing information.</li>
+                <li>Feature Importance: XGBoost provides feature importance scores, which allow us to identify which features most strongly influence maize production.</li>
+            </ul>
+
+            <p><b>Why I Chose This Model:</b> The maize production dataset includes country-specific factors such as population and yield that interact in complex, nonlinear ways. XGBoost is well-suited to capture these relationships. Furthermore, XGBoost handles missing values and outliers well, which was important given the characteristics of this dataset.</p>
+
+            <p><b>Tuning Parameters and Rationale</b></p>
+            <ul>
+                <li>n_estimators=100: This parameter specifies the number of boosting rounds (trees) used by the model. A value of 100 was chosen because it provided a balance between model performance and computational efficiency. Fewer trees resulted in lower prediction accuracy, while using more trees did not substantially improve the performance but increased training time.</li>
+                <li>max_depth=20: The maximum depth of each decision tree was set to 20. This helps prevent the trees from becoming too deep and overfitting the data. Values between 10 and 30 were tested, and 20 was found to be the optimal value to capture complex patterns without overfitting.</li>
+            </ul>
+
+            <p>The XGBoost Regressor was trained using these parameters to predict <b>maize production for different countries in 2025.</b></p>
+
+            <img src="./DataModel_images/Agriculture_modelling1.png" alt="agriculture">
+
+
+            <p>The XGBoost Regressor was trained to predict <b>food supply per capita for different countries in 2025.</b></p>
+            <img src="./DataModel_images/Agriculture_modelling2.png" alt="agriculture">
+
+            <p><b>Prediction of Maize Production in Different Countries for 2025</b></p>
+            <p>The trained XGBoost model was used to predict maize production for selected countries in 2025. The model achieved an impressive R² score of 0.9887, indicating that it explained a significant portion of the variance in maize production across countries.</p>
+            <p>The following countries were selected for prediction in 2025:</p>
+
+            <ul>
+                <li>India</li>
+                <li>China</li>
+                <li>Brazil</li>
+                <li>Mexico</li>
+                <li>Nigeria</li>
+                <li>Indonesia</li>
+                <li>Pakistan</li>
+                <li>Russia</li>
+                <li>Ukraine</li>
+            </ul>
+
+            <img src="./DataModel_images/Agriculture_prediction1.png" alt="agriculture">
+            <p>These predictions can help stakeholders understand expected trends in maize production and assist in long-term agricultural planning.</p>
+
+            <p><b>Prediction of Food Supply per Capita in Different Countries for 2025</b></p>
+<p>The trained XGBoost model was used to predict food supply per capita for selected countries in 2025. The model was fitted on data including 'Country' and 'Year' as the main features, and it provided insights into expected trends in food supply for the given countries.</p>
+<p>The following countries were selected for prediction in 2025:</p>
+
+<ul>
+    <li>India</li>
+    <li>China</li>
+    <li>Brazil</li>
+    <li>Mexico</li>
+    <li>Nigeria</li>
+</ul>
+
+<img src="./DataModel_images/Agriculture_prediction2.png" alt="agriculture">
+<p>These predictions offer valuable insights for stakeholders, including policymakers, researchers, and organizations focused on food security. By understanding projected food supply levels, these predictions can aid in addressing potential challenges in food distribution and availability.</p>
+
+
+            <p><b>Top Indicators Contributing to Maize Production Over the Years</b></p>
+            <p>The XGBoost model provided feature importance scores, which indicated the top factors contributing to global maize production. The most influential features were:</p>
+
+            <ul>
+                <li>Population: Countries with larger populations generally saw higher levels of maize production due to greater demand for food.</li>
+                <li>Yield (t/ha): Higher yields per hectare significantly impacted maize production, reflecting the efficiency of agricultural practices.</li>
+                <li>Area Harvested: A larger area of land harvested for maize was also a strong predictor of higher production levels.</li>
+
+            </ul>
+
+            <p>The analysis revealed that improvements in yield and increases in harvested area were key factors driving global maize production growth over the years.</p>
+        </div>
+    </div>
+
+    <div id="myWeatherModal" class="modal">
+        <div class="modal-content" style="background-color: rgb(188, 255, 208);">
+            <span class="close" onclick="closeWeatherModal()">&times;</span>
+            
+            <h1>Model Implemented: Gradient Boosting Regressor</h1>
+
+            <p><b>Introduction</b></p>
+            <p>Weather prediction plays a crucial role in various sectors such as agriculture, transportation, and energy. Accurate temperature forecasts, particularly for maximum and minimum temperatures, are essential for planning and preparedness. This report uses machine learning, specifically the Gradient Boosting Regressor, to predict maximum and minimum temperatures for different cities for the month of January 2025. By utilizing historical weather data from 1892 to 2023, this model aims to forecast temperature patterns and assist in climate-related decision-making.</p>
+
+            <p><b>Dataset Overview</b></p>
+            <p>The dataset provides weather information across various cities, with a focus on temperature and precipitation data. The data spans from 1892 to 2023, including daily records of maximum and minimum temperatures (tmax, tmin) and precipitation levels (prcp) for different cities.</p>
+
+            <p><b>Description of the Data</b></p>
+            <p>The dataset contains weather-related data for cities between 2017 and 2023. Key features include:</p>
+            <p><b>Key Columns:</b></p>
+            <ul>
+                          <li>Date: The date of the weather observation.</li>
+                <li>City_Name: The name of the city where the weather data was recorded.</li>
+                <li>tmax: Maximum daily temperature in Fahrenheit.</li>
+                <li>tmin: Minimum daily temperature in Fahrenheit.</li>
+                <li>prcp: Precipitation level in inches.</li>
+            </ul>
+            
+            <p><b>Data Characteristics:</b></p>
+            <ul>
+                <li>Some columns contained missing values, which were handled by imputing the mean for temperature columns (tmax, tmin) and filling missing precipitation values with zero.</li>
+                <li>Date columns were converted to a pandas datetime format, and additional features such as Year, Month, and Day were extracted from the Date.</li>
+                <li>Categorical data (City_Name) was encoded using Label Encoding.</li>
+            </ul>
+            
+            <p><b>Pre-Processing</b></p>
+            <p>The preprocessing steps followed to prepare the data for modeling were:</p>
+            <ul>
+                <li>Handling Missing Values: Missing values in tmax, tmin, and prcp were handled by filling them with the mean for temperature columns and zero for precipitation values.</li>
+                <li>Date Extraction: The Date column was converted into Year, Month, and Day columns to capture temporal patterns.</li>
+                <li>Feature Standardization: The temperature (tmax, tmin) and precipitation (prcp) data were standardized using Z-score Standardization to scale the features appropriately for modeling.</li>
+                <li>Label Encoding: The City_Name was encoded numerically to facilitate its use in machine learning models.</li>
+            </ul>
+            
+            <p><b>Model Selection and Training</b></p>
+            <p><b>Gradient Boosting Regressor (GBM)</b> is an ensemble learning method that builds a series of decision trees sequentially. Each tree corrects the errors made by the previous ones, leading to a robust model for regression tasks. GBM is well-suited for this weather prediction task, as it can effectively capture complex, nonlinear relationships between features.</p>
+
+            <p><b>Key Features of Gradient Boosting Regressor:</b></p>
+            <ul>
+                <li>Sequential Learning: GBM builds trees sequentially, with each tree focusing on the errors made by the previous one.</li>
+                <li>Handling Complex Data: It can model nonlinear relationships and is effective in capturing interactions between different variables, such as city and temporal features.</li>
+                <li>Robustness: GBM can handle outliers and missing data effectively, making it ideal for weather datasets with some missing entries.</li>
+            </ul>
+            
+            <p><b>Why I Chose This Model:</b> The Gradient Boosting Regressor was selected due to its ability to model complex relationships in the weather dataset, such as temporal and city-specific patterns. It is particularly suitable for datasets with nonlinear interactions and a mix of continuous and categorical features.</p>
+            
+            <p><b>Tuning Parameters and Rationale</b></p>
+            <ul>
+                <li>n_estimators=50: The number of boosting rounds (decision trees) was set to 50, balancing model complexity and computational efficiency. Increasing this value further did not significantly improve the results, so 50 trees provided a good trade-off.</li>
+                <li>max_depth=10: This parameter limits the depth of individual trees to avoid overfitting. Depth 10 provided an optimal balance between capturing sufficient interactions and preventing overfitting.</li>
+                <li>learning_rate=0.1: The learning rate controls the contribution of each tree to the model. A rate of 0.1 was chosen as it allowed the model to converge effectively while preventing overfitting.</li>
+            </ul>
+            
+            <img src="./DataModel_images/Weather_modelling1.png" alt="weather">
+
+            <p>The GradientBoostingRegressor was trained to predict the standardized maximum and minimum temperatures for various cities based on their temporal and city-related features.</p>
+
+            
+            <p><b>Prediction of January 2025 Temperatures</b></p>
+            <p>The trained Gradient Boosting models were used to predict maximum and minimum temperatures for cities like "Lander" and "Milwaukee" in January 2025. The predictions were based on historical data from 2017 to 2023, and the results were visualized in a plot showing the predicted temperatures for each day in January 2025.</p>
+            
+            <p>The model provides R² scores for both maximum and minimum temperatures, indicating the accuracy of the predictions:</p>
+            
+            <p><b>Evaluation for tmax:</b></p>
+            <ul>
+                <li>MAE: Mean Absolute Error for tmax predictions.</li>
+                <li>MSE: Mean Squared Error for tmax predictions.</li>
+                <li>R² Score: The proportion of variance in tmax that is explained by the model.</li>
+            </ul>
+            
+            <p><b>Evaluation for tmin:</b></p>
+            <ul>
+                <li>MAE: Mean Absolute Error for tmin predictions.</li>
+                <li>MSE: Mean Squared Error for tmin predictions.</li>
+                <li>R² Score: The proportion of variance in tmin that is explained by the model.</li>
+            </ul>
+            
+            <p><b>Predicting Temperatures for January 2025</b></p>
+            <p>Using the trained model, the following functions were implemented:</p>
+            <ul>
+                <li>predict_temperature(input_date, input_city): This function predicts the maximum and minimum temperatures for a given city and date.</li>
+                <li>predict_january_2025(input_city): This function generates predictions for the entire month of January 2025 for a specific city (e.g., "Lander" or "Milwaukee") and plots the predicted maximum and minimum temperatures.</li>
+            </ul>
+            <img src="./DataModel_images/Weather_prediction1.png" alt="weather">
+            <img src="./DataModel_images/Weather_prediction2.png" alt="weather">
+            <p>The plots provide a visual representation of the predicted temperatures for the selected cities, helping to understand the temperature trends over the month of January 2025.</p>
+            
+            <p><b>Top Indicators Contributing to Temperature Predictions</b></p>
+            <p>The Gradient Boosting Regressor model used various features for temperature prediction, including:</p>
+            <ul>
+                <li>City_Label: Encoded city information, which helps the model capture regional temperature patterns.</li>
+               <li>Year, Month, Day: These temporal features allowed the model to account for seasonal temperature variations and year-over-year trends.</li>
+            </ul>
+            
+            <p>The analysis showed that City_Label and Year were significant contributors to the prediction of both maximum and minimum temperatures, reflecting the regional and yearly temperature patterns.</p>
+
+        </div>
+    </div>
+
+    <div id="myEnvironmentModal" class="modal">
+        <div class="modal-content" style="background-color: rgb(154, 253, 240);">
+            <span class="close" onclick="closeEnvironmentModal()">&times;</span>
+            <h1>Model Implemented: Bagging Regressor</h1>
+
+<p><b>Introduction to Environmental Data Analysis</b></p>
+<p>Environmental data encompasses a wide range of factors, including air quality, water availability, land use, and greenhouse gas (GHG) emissions. According to Soshkova 267, analyzing this data is crucial to understanding the impact of human activity and natural processes on ecosystems. By analyzing and forecasting this data, we can reveal threats, influence policies, and manage resource usage to avoid adverse environmental impacts.</p>
+
+<p>A major aspect of environmental assessment is projecting future events. The collected data is used to forecast trends in usage, emissions, or climate impacts, allowing for the precise application of solutions to critical environmental issues. This approach prepares policymakers, industries, and communities to build the sustainable future we all strive for today.</p>
+
+<p><b>Approach to Predicting GHG Emissions from Waste in 2025</b></p>
+<p><b>Dataset Overview:</b></p>
+<p>The dataset contains various environmental indicators, including variables such as location, category, year, variable name, and value.</p>
+
+<p><b>Description of the Data:</b></p>
+<p>This comprehensive dataset tracks environmental indicators, such as greenhouse gas (GHG) emissions from waste, and other ecological metrics.</p>
+
+<p><b>Key Columns:</b></p>
+<ul>
+    <li>Location Name: Countries or regions where the data is recorded.</li>
+    <li>Category: The environmental domain (e.g., air, climate, energy, water resources).</li>
+    <li>Variable Name: Specific environmental metrics (e.g., GHG from Waste, precipitation).</li>
+    <li>Year: The year of the record.</li>
+    <li>Value: Measured value of the environmental indicator (in various units).</li>
+</ul>
+
+<p><b>Data Characteristics:</b></p>
+<ul>
+    <li>Missing values in both categorical (Category, Variable Name) and numerical (Value) fields.</li>
+    <li>Outliers in the Value column that required handling.</li>
+</ul>
+
+<p><b>Data Preprocessing:</b></p>
+<ul>
+    <li><b>Handling Missing Values:</b> Numerical columns were filled with their mean values, while categorical columns were filled with the most frequent values using SimpleImputer.</li>
+    <li><b>Encoding:</b> Applied LabelEncoder to transform categorical features (e.g., location_name, category, variable_name) into numerical values for compatibility with machine learning models.</li>
+    <li><b>Standardization:</b> Scaled numerical columns (year and value) using StandardScaler to bring all features onto a uniform scale.</li>
+    <li><b>Outlier Removal:</b> Used the Interquartile Range (IQR) method to detect and remove outliers in the value column, enhancing the reliability of the analysis.</li>
+</ul>
+
+<p><b>Model Selection and Training</b></p>
+<p><b>Bagging (Bootstrap Aggregating)</b> is an ensemble technique that forms multiple base models (in this case, Decision Trees) using a training dataset. The results from these models are combined (mean taken for regression tasks) to decrease variance and increase consistency. Decision Trees, unlike parametric models, are capable of capturing non-linear data patterns.</p>
+
+<p><b>Key Features:</b></p>
+<ul>
+    <li>Helps to reduce overfitting by averaging the predictions of multiple models.</li>
+    <li>Improves prediction accuracy, especially for high-variance models like Decision Trees.</li>
+    <li>Works well with datasets containing missing values or outliers, as Decision Trees are robust to such issues.</li>
+    <li>Offers flexibility in selecting the base model and tuning parameters for optimization.</li>
+</ul>
+
+<p><b>Advantages:</b></p>
+<ul>
+    <li>Reduces overfitting compared to standalone Decision Trees.</li>
+    <li>Is robust to noisy data and outliers.</li>
+    <li>Provides flexibility in modifying base estimators and tuning parameters.</li>
+</ul>
+
+<p><b>Why I Chose This Model:</b> The environmental dataset includes diverse variables such as emissions, energy use, and water resources, which makes it complex and non-linear. The BaggingRegressor was selected for its ability to:</p>
+<ul>
+    <li>Handle variations across different categories and variables.</li>
+    <li>Be robust to overfitting, crucial for the variability in environmental data.</li>
+    <li>Combine Decision Trees effectively, leveraging their ability to capture non-linear relationships.</li>
+</ul>
+
+<p><b>Tuning Parameters and Rationale:</b></p>
+<ul>
+    <li><b>n_estimators=120:</b> Specifies the number of base estimators (Decision Trees) in the ensemble. After experimenting with values 50, 100, and 150, 120 was chosen for its balance between prediction accuracy and computational efficiency.</li>
+    <li><b>Base Estimator:</b> DecisionTreeRegressor was chosen for its ability to capture non-linear relationships in the data, essential for accurate predictions of GHG emissions.</li>
+</ul>
+
+<img src="./DataModel_images/Environment_modelling1.jpg" alt="Environment">
+<p>The dataset was split into training and testing sets (80-20), and the model achieved an R² score of 0.8730, indicating strong predictive performance.</p>
+
+<p><b>Prediction of Greenhouse Gas Emissions from Waste (GHG from Waste) in 2025 in Different Countries</b></p>
+
+<img src="./DataModel_images/Environment_prediction1.png" alt="Environment">
+
+<p>The model forecasts GHG emissions from waste for various countries, providing a detailed outlook for the year 2025. These predictions highlight regions and sectors requiring targeted environmental interventions.</p>
+
+        </div>
+    </div>
+    <div id="myHealthModal" class="modal">
+        <div class="modal-content" style="background-color: rgb(252, 223, 255);">
+            <span class="close" onclick="closeHealthModal()">&times;</span>
+            <h1>Models Implemented: Random Forest Regression & KNN</h1>
+
+<p><b>Introduction</b></p>
+<p>Health expenditure refers to funds committed to the purchase of healthcare and related products, as well as preventive, curative, and rehabilitative services. Such expenditures are now the most useful indicators to compare the healthcare systems in different countries, contributing to improvements in the well-being of populations. These include government grants, private health revenue, foreign assistance, and voluntary contributions. The balancing and forecasting of health costs remain critical in health access, resource estimation, and addressing global health inequalities.</p>
+
+<p><b>Dataset Overview</b></p>
+<p>The dataset includes information about country indicators contributing to health expenditures, yearly data, and expenditure values.</p>
+
+<p><b>Description of the Data</b></p>
+<p>The dataset includes health expenditure information across countries from 2000 to 2022.</p>
+<p><b>Key Columns:</b></p>
+<ul>
+    <li>Countries: Names of countries where expenditures were recorded.</li>
+    <li>Indicators: Categories of health expenditures (e.g., government schemes, direct foreign transfers).</li>
+    <li>Year: The year of the expenditure record.</li>
+    <li>Value: The expenditure amount recorded for each indicator (various units).</li>
+</ul>
+
+<p><b>Data Characteristics:</b></p>
+<ul>
+    <li>Some missing values in the Value column.</li>
+    <li>Outliers present in the Value data, indicating extreme expenditure values in certain records.</li>
+</ul>
+
+<p><b>Preprocessing</b></p>
+<ul>
+    <li>Applied label encoding to transform categorical columns like countries and indicators into numerical formats.</li>
+    <li>Standardized the numerical columns like year and value to ensure a uniform scale for analysis.</li>
+    <li>Removed outliers using the Interquartile Range method, improving the performance and reliability of the model.</li>
+</ul>
+
+<p><b>Model Selection and Training</b></p>
+<p><b>Random Forest</b> is a supervised learning algorithm where several decision trees are created during training, and the results from all trees are used as the final output. Each tree is trained on a bootstrapped sample of the data, considering only a random subset of features during splitting. This randomness helps avoid overfitting and provides better generalization.</p>
+
+<p><b>Key Features:</b></p>
+<ul>
+    <li>Handles both categorical and continuous variables effectively.</li>
+    <li>Reduces the risk of overfitting compared to individual decision trees.</li>
+    <li>Provides feature importance scores, enabling insights into which variables contribute most to the predictions.</li>
+    <li>Robust to missing data and scales well with large datasets.</li>
+</ul>
+
+<p><b>Advantages:</b></p>
+<ul>
+    <li>Handles large datasets and high-dimensional spaces effectively.</li>
+    <li>Reduces variance compared to single decision trees, ensuring better generalization.</li>
+    <li>Provides feature importance scores, aiding interpretability.</li>
+</ul>
+
+<p><b>Why I Chose This Model:</b> The health expenditures dataset is complex, with several indicators and country-dependent characteristics. Random Forest is capable of capturing the non-linear relationships and interactions within this data. Its feature importance ability allowed us to identify the top indicators driving health expenditures globally.</p>
+
+<p><b>Tuning Parameters and Rationale:</b></p>
+<ul>
+    <li>n_estimators=100: The number of decision trees used to construct the model, offering a good balance between capturing data patterns and computational efficiency.</li>
+    <li>max_depth=20: This limits the depth of individual trees to avoid overfitting, ensuring that the trees capture meaningful features while maintaining generalization.</li>
+</ul>
+
+<img src="./DataModel_images/Health_modelling1.jpg" alt="Health">
+
+<p>The RandomForestRegressor was trained on the dataset and used to predict total health expenditures in different countries in 2025, achieving a robust R² score of 0.8911.</p>
+
+<p><b>Prediction of Total Health Expenditures in Different Countries in 2025</b></p>
+<p>The trained Random Forest model was used to predict total health expenditures for various countries in 2025. The high R² score indicates that the model captures a significant portion of variance in health expenditure patterns.</p>
+
+<img src="./DataModel_images/Health_prediction1.png" alt="Health">
+
+<p><b>Top Indicators Contributing to Health Expenditures</b></p>
+
+<img src="./DataModel_images/Health_prediction2.png" alt="Health">
+<p>The analysis revealed the following top contributors to global health expenditures over the years:</p>
+<ul>
+    <li>Internal transfers and grants</li>
+    <li>Compulsory contributory health care financing schemes</li>
+    <li>Government schemes</li>
+    <li>Household out-of-pocket payments</li>
+    <li>Voluntary health care payment schemes</li>
+</ul>
+
+<p><b>Introduction to Malaria Incidence</b></p>
+<p>Malaria is a global public health issue, particularly affecting tropical and subtropical countries. Malaria surveillance and forecasting are crucial for prevention, treatment, and control interventions. By using historical malaria incidence data and machine learning models, health organizations can predict trends and make informed decisions to reduce malaria’s impact through effective policies.</p>
+
+<p><b>Approach to Predicting Malaria Incidence in 2025</b></p>
+<p>The dataset includes malaria incidence rates across countries and WHO regions over the years.</p>
+
+<p><b>Key Features:</b></p>
+<ul>
+    <li>WHORegionCode, WHORegion: WHO regions and their identifiers.</li>
+    <li>Country Code, Country: Country codes and names.</li>
+    <li>Year: The year of the malaria incidence record.</li>
+    <li>Malaria Incidence: Number of malaria cases per 1,000 population.</li>
+</ul>
+
+<p><b>Description of the Data:</b></p>
+<ul>
+    <li>Includes both recent and older yearly records (IsLatestYear column).</li>
+    <li>Contains variations in malaria incidence with some outliers and missing values.</li>
+</ul>
+
+<p><b>Preprocessing Steps:</b></p>
+<ul>
+    <li>Handling Missing Values: Numerical columns were replaced with their mean values, and categorical columns were filled with the most frequent values using SimpleImputer.</li>
+    <li>Encoding: Categorical variables were converted to numeric using LabelEncoder.</li>
+    <li>Standardization: Used StandardScaler to standardize the Year and Malaria Incidence columns.</li>
+    <li>Outlier Removal: The Interquartile Range method was used to eliminate outliers, improving the dataset's reliability.</li>
+</ul>
+
+<p><b>Model Selection and Training</b></p>
+<p><b>K-Nearest Neighbors (KNN)</b> is a nonparametric method that predicts target values based on 'k' closest data points. It uses distance metrics, such as Euclidean distance, to determine neighbors. For regression tasks, the target value is the mean (or weighted mean) of the target values of the neighbors.</p>
+
+<p><b>Key Features:</b></p>
+<ul>
+    <li>Does not assume data distribution.</li>
+    <li>Captures local relationships effectively.</li>
+    <li>Simple to implement and understand.</li>
+    <li>Sensitive to feature scaling, addressed by standardization.</li>
+</ul>
+
+<p><b>Advantages:</b></p>
+<ul>
+    <li>Effective for datasets where similar inputs yield similar outputs.</li>
+    <li>Does not require a training phase, as it is a lazy learner that depends on the stored dataset.</li>
+    <li>Highly interpretable and flexible, especially for small datasets.</li>
+</ul>
+
+<p><b>Why I Chose This Model:</b> The malaria incidence data has strong geographical and temporal patterns. KNN was chosen for its ability to make predictions based on local trends and its adaptability to different data distributions.</p>
+
+<p><b>Tuning Parameters and Rationale:</b></p>
+<ul>
+    <li>n_neighbors=2: A small k value captures local variations in malaria incidence, ensuring precise predictions for different regions or years.</li>
+</ul>
+
+<img src="./DataModel_images/Health_modelling2.jpg" alt="Health">
+
+<p>The KNN model was trained on the preprocessed dataset and achieved a high R² score of 0.9872, indicating excellent prediction accuracy.</p>
+
+<p><b>Malaria Incidence per 1,000 Population in Different Countries in 2025</b></p>
+
+<img src="./DataModel_images/Health_prediction3.png" alt="Health">
+
+<p>The trained KNN model forecasted malaria incidence per 1,000 population across countries in different WHO regions for 2025. The following WHO regions were predicted:</p>
+<ul>
+    <li>Africa</li>
+    <li>Americas</li>
+    <li>Europe</li>
+    <li>South-East Asia</li>
+    <li>Western Pacific</li>
+    <li>Eastern Mediterranean</li>
+</ul>
+
+        </div>
+    </div>
+
+    <div id="myMarketModal" class="modal">
+        <div class="modal-content" style="background-color: rgb(237, 241, 198);">
+            <span class="close" onclick="closeMarketModal()">&times;</span>
+            <h1>Models Implemented: Random Forest Regression & Gradient Boosting Regression</h1>
+
+<p><b>Introduction</b></p>
+<p>Economic growth and inflation are two interrelated metrics that provide critical insights into the stability and progress of economies. Gross Domestic Product (GDP) growth serves as an indicator of a nation’s economic expansion, reflecting increases in productivity, job creation, and living standards. Inflation, on the other hand, measures the rate of price changes for goods and services over time, indicating shifts in purchasing power and economic equilibrium. Together, these metrics offer a comprehensive understanding of the dynamics driving global and national economies.</p>
+
+<p><b>GDP Growth Prediction:</b></p>
+<p>The forecast of GDP growth involves examining sectoral contributions, trade balances, and inflation trends to predict economic performance in upcoming years.</p>
+
+<p><b>Inflation Prediction:</b></p>
+<p>Inflation is analyzed by considering historical inflation rates, economic policies, and growth metrics to project future price level changes.</p>
+
+<p><b>Dataset</b></p>
+<p>The dataset spans multiple countries from 2013 to 2023, offering a robust foundation for predicting GDP growth and inflation for 2024 and 2025. It includes economic indicators, sectoral contributions, trade dynamics, and inflation trends.</p>
+
+<p><b>Key Features of the Data</b></p>
+<ul>
+    <li><b>Key Columns:</b>
+        <ul>
+            <li>Country Name: Countries for which GDP and inflation data are recorded.</li>
+            <li><b>Inflation:</b> 
+                <ul>
+                    <li>2023 - Inflation (annual %): Measures the rate of price level changes in 2023.</li>
+                    <li>Predicted 2024 Inflation (annual %) and Predicted 2025 Inflation (annual %): Projected inflation rates.</li>
+                </ul>
+            </li>
+            <li><b>GDP Growth:</b> 
+                <ul>
+                    <li>2023 - GDP growth (annual %): Economic expansion or contraction rate for 2023.</li>
+                    <li>Predicted 2024 GDP growth (annual %): Projected GDP growth for 2024.</li>
+                </ul>
+            </li>
+            <li><b>Sectoral Contributions:</b>
+                <ul>
+                    <li>Agriculture (% of GDP), Industry (% of GDP), Services (% of GDP): Contributions of major economic sectors.</li>
+                </ul>
+            </li>
+            <li><b>Trade Metrics:</b>
+                <ul>
+                    <li>Trade (% of GDP), Imports of goods and services (% of GDP), Exports of goods and services (% of GDP).</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<p><b>Data Characteristics:</b></p>
+<ul>
+    <li>Timeframe: Covers annual data from 2013 to 2023 across multiple countries.</li>
+    <li>Missing Data: Addressed using imputation techniques (e.g., mean imputation for GDP growth data).</li>
+    <li>Outliers: Detected and addressed in key columns to improve prediction accuracy.</li>
+</ul>
+
+<p><b>Predictive Goals:</b></p>
+<ul>
+    <li>Inflation prediction for 2024 and 2025 using historical inflation and GDP growth rates.</li>
+    <li>GDP growth prediction for 2024 using inflation, sectoral contributions, and trade metrics.</li>
+</ul>
+
+<p><b>Preprocessing Steps:</b></p>
+<ul>
+    <li><b>Handling Missing Values:</b> Applied KNN imputation for missing values in GDP and inflation metrics. Ensured no rows with missing target variables (2024 and 2025) remained.</li>
+    <li><b>Standardization:</b> Standardized numerical columns (e.g., GDP growth, inflation) using StandardScaler to ensure comparability across features.</li>
+    <li><b>Feature Selection:</b> Selected key economic indicators dynamically based on their relevance to GDP growth and inflation prediction.</li>
+    <li><b>Target Variable Creation:</b> Created target columns (2024 GDP growth (annual %), 2024 Inflation (annual %)) by shifting historical data.</li>
+    <li><b>Train-Test Splits:</b> Split data into 80% training and 20% testing for model evaluation.</li>
+</ul>
+
+<p><b>Model Selection:</b></p>
+
+<p><b>1. Random Forest for Inflation Prediction</b></p>
+
+<img src="./DataModel_images/Market_modelling2.jpg" alt="Market">
+
+<p><b>Why Random Forest?</b></p>
+<p>Random Forest was chosen for its robustness in modeling non-linear relationships and handling structured datasets. Its ability to rank feature importance and generalize well across varying datasets makes it an ideal choice for inflation prediction.</p>
+
+<p><b>Features:</b></p>
+<ul>
+    <li>Historical inflation rates.</li>
+    <li>GDP growth rates.</li>
+</ul>
+
+<p><b>Rationale:</b></p>
+<ul>
+    <li>Random Forest can capture the complex relationship between inflation and its driving factors (e.g., past inflation trends, GDP growth).</li>
+    <li>The model is resistant to overfitting due to its ensemble nature, which combines multiple decision trees.</li>
+</ul>
+
+<p><b>Performance:</b></p>
+<ul>
+    <li><b>2024 Inflation Prediction:</b>
+        <ul>
+            <li>MSE: 4.560</li>
+            <li>R²: 0.964</li>
+        </ul>
+    </li>
+    <li><b>2025 Inflation Prediction:</b>
+        <ul>
+            <li>MSE: 9.388</li>
+            <li>R²: 0.921</li>
+        </ul>
+    </li>
+</ul>
+
+<img src="./DataModel_images/Market_prediction1.png" alt="Market">
+
+<p><b>2. Gradient Boosting for GDP Growth Prediction</b></p>
+<img src="./DataModel_images/Market_modelling1.jpg" alt="Market">
+
+<p><b>Why Gradient Boosting?</b></p>
+<p>Gradient Boosting was selected due to its capability to model moderate-sized datasets effectively and capture complex relationships between economic indicators and GDP growth.</p>
+
+<p><b>Features:</b></p>
+<ul>
+    <li>Historical GDP growth rates.</li>
+    <li>Sectoral contributions (Agriculture, Industry, Services).</li>
+    <li>Inflation metrics.</li>
+</ul>
+
+<p><b>Rationale:</b></p>
+<ul>
+    <li>Gradient Boosting models interactions and non-linear dependencies effectively.</li>
+    <li>The model provides feature importance scores, offering insights into factors like trade and sectoral contributions driving GDP growth.</li>
+</ul>
+
+<p><b>Performance:</b></p>
+<ul>
+    <li><b>2024 GDP Growth Prediction:</b>
+        <ul>
+            <li>MSE: 0.108</li>
+            <li>R²: 0.988</li>
+        </ul>
+    </li>
+</ul>
+
+<img src="./DataModel_images/Market_prediction2.png" alt="Market">
+
+<p><b>Tuning Parameters and Rationale:</b></p>
+
+<p><b>Random Forest for Inflation Prediction:</b></p>
+<ul>
+    <li><b>n_estimators=500:</b> Set to 500 trees to balance accuracy and computational cost. Increasing trees beyond 500 yielded minimal improvements.</li>
+    <li><b>max_depth=10:</b> Limited tree depth to prevent overfitting while capturing sufficient patterns.</li>
+    <li><b>Bootstrap Sampling:</b> Ensures robust predictions by training on random subsets of data.</li>
+</ul>
+<p>Rationale: The model is suited for datasets with missing values and non-linear relationships, providing robust inflation forecasts.</p>
+
+<p><b>Gradient Boosting for GDP Growth Prediction:</b></p>
+<ul>
+    <li><b>n_estimators=500:</b> Sufficient trees to capture complex relationships while maintaining efficiency.</li>
+    <li><b>max_depth=5:</b> Shallow trees prevent overfitting to limited GDP data.</li>
+    <li><b>learning_rate=0.1:</b> Steady convergence with efficient learning.</li>
+</ul>
+<p>Rationale: Gradient Boosting’s iterative optimization and ability to model complex relationships make it ideal for GDP prediction.</p>
+
+<p><b>Conclusion</b></p>
+<p>The selected models achieved high performance in predicting GDP growth and inflation for 2024 and 2025. Random Forest provided accurate inflation forecasts with a focus on historical trends, while Gradient Boosting effectively modeled GDP growth by leveraging sectoral contributions and trade dynamics. These models offer insights into the driving factors of economic outcomes, aiding policymakers and researchers in data-driven decision-making.</p>
+
+        </div>
+    </div>
+
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
+        }
+
+        function openAgricultureModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("myAgricultureModal");
+            modal.style.display = "flex"; // Show the modal
+        }
+        function openWeatherModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("myWeatherModal");
+            modal.style.display = "flex"; // Show the modal
+        }
+        function openEnvironmentModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("myEnvironmentModal");
+            modal.style.display = "flex"; // Show the modal
+        }
+        function openHealthModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("myHealthModal");
+            modal.style.display = "flex"; // Show the modal
+        }
+        function openMarketModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("myMarketModal");
+            modal.style.display = "flex"; // Show the modal
+        }
+        function closeAgricultureModal() {
+            const modal = document.getElementById("myAgricultureModal");
+            modal.style.display = "none"; // Hide the modal
+        }
+        function closeWeatherModal() {
+            const modal = document.getElementById("myWeatherModal");
+            modal.style.display = "none"; // Hide the modal
+        }
+        function closeEnvironmentModal() {
+            const modal = document.getElementById("myEnvironmentModal");
+            modal.style.display = "none"; // Hide the modal
+        }
+        function closeHealthModal() {
+            const modal = document.getElementById("myHealthModal");
+            modal.style.display = "none"; // Hide the modal
+        }
+        function closeMarketModal() {
+            const modal = document.getElementById("myMarketModal");
+            modal.style.display = "none"; // Hide the modal
         }
     </script>
 

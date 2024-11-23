@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Analysis Across Diverse Fields</title>
+    
+    <link rel="stylesheet" href="./Main.css">
+
+    <style>
+        /* Additional styles for centering and image display */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh; /* Adjust as needed */
+            gap: 40px; /* Space between images */
+        }
+        .button-container img {
+            height: 400px; /* Set a specific height for both images */
+            width: auto; /* Maintain aspect ratio */
+            cursor: pointer;
+            transition: transform 0.2s; /* Smooth scaling */
+        }
+        .button-container img:hover {
+            transform: scale(1.1); /* Scale up on hover */
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed; /* Fixed positioning */
+            z-index: 1000; /* High z-index to ensure it is above other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Width of the modal */
+            height: 80%; /* Height auto to fit content */
+            max-height: 80%; /* Limit height */
+            overflow: auto; /* Allow scrolling if content is too tall */
+            position: relative; /* Position relative for close button */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Centering the heading */
+        .modal-content h2 {
+            text-align: center; /* Center the heading */
+        }
+        .image-container {
+            display: block; /* Change to block to stack images */
+            max-width: 80%; /* Adjust max-width as needed */
+        }
+        .image-container img {
+            max-width: 80%; /* Responsive images */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 20px; /* Space between images */
+        }
+        /* Styles for the circular button modal */
+        .circular-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 70%; /* Size of the circular button container */
+            height: 70%; /* Size of the circular button container */
+            margin: 0 auto; /* Center the circular buttons container */
+        }
+        .circular-buttons button {
+            font-size: 25px;
+            position: absolute;
+            width: 150px; /* Diameter of each button */
+            height: 150px; /* Diameter of each button */
+            border-radius: 50%; /* Make buttons round */
+            border: none;
+            background-color: #4CAF50; /* Button color */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Remove transform transition */
+        }
+        .circular-buttons button:hover {
+            background-color: #45a049; /* Darker shade on hover */
+        }
+        /* Position buttons in a circle */
+        .button1 { transform: rotate(0deg) translate(200px) rotate(0deg); }
+        .button2 { transform: rotate(72deg) translate(200px) rotate(-72deg); }
+        .button3 { transform: rotate(144deg) translate(200px) rotate(-144deg); }
+        .button4 { transform: rotate(216deg) translate(200px) rotate(-216deg); }
+        .button5 { transform: rotate(288deg) translate(200px) rotate(-288deg); }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <a href="./index.html">
+            <img src="./Images/Logo.png" alt="Logo"> <!-- Update the logo path -->
+        </a>
+        <h1>Trend Analysis Across Diverse Fields</h1>
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
+    </header>
+    
+    <div class="sidebar" id="sidebar">
+        <button class="close-button" onclick="toggleMenu()">×</button>
+        <div class="sidebar-options">
+            <button onclick="window.location.href='./index.html'">Home</button>
+            <button onclick="window.location.href='./introduction.html'">Introduction</button>
+            <button onclick="window.location.href='./dataexploration.html'">Data Exploration</button>
+            <button onclick="window.location.href='./modelsimplemented.html'">Models Implemented</button>
+            <button onclick="window.location.href='./conclusion.html'">Conclusion</button>
+            <button onclick="window.location.href='./team.html'">Team</button>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <a href="#" id="data-preprocessing-link" onclick="openModal(event)">
+            <img src="./Images/Data_Preprocessing.png" alt="Data Preprocessing Steps"> <!-- Update image path -->
+        </a>
+        <a href="#" id="data-exploration-link" onclick="openCircularModal(event)">
+            <img src="./Images/Data_Exploration.png" alt="Data Exploration"> <!-- Update image path -->
+        </a>
+    </div>
+    
+    <div id="circularModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCircularModal()">&times;</span>
+            <h2>Select the Field to Explore</h2>
+            <div class="circular-buttons">
+                <button class="button1" onclick="buttonAction(1)">Weather</button>
+                <button class="button2" onclick="buttonAction(2)">Healthcare</button>
+                <button class="button3" onclick="buttonAction(3)">Environment</button>
+                <button class="button4" onclick="buttonAction(4)">Market</button>
+                <button class="button5" onclick="buttonAction(5)">Agriculture</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Data Preprocessing Steps</h2>
+            <p><b>1. Handling Missing Values:</b></p>
+            <p>These are null values in the dataset. They impact machine learning results and statistical analysis, leading to biased estimates. This occurs due to data collection issues or entry mistakes.</p>
+            <p>In this project, we handle them using <i>SimpleImputer</i> from scikit-learn. We replace missing values of numerical variables with the mean. We replace missing values of categorical variables with the most frequent item. We can also remove entire columns or rows that contain all null values.</p>
+            
+            <div class="image-container">
+                <img src="./Images/Handling_Missing_Values1.png" alt="Handling Missing Values Image 1">
+                <img src="./Images/Handling_Missing_Values2.png" alt="Handling Missing Values Image 2">
+            </div>
+            
+            <p><b>2. Encoding:</b></p>
+            <p>Encoding transforms categorical variables into numerical formats. Many algorithms can only process numerical input.</p>
+            <p>In this project, we use <i>LabelEncoder</i> from scikit-learn. Each category is assigned a unique integer value. For example, location names like India, USA, and New Zealand become 1, 2, and 3, respectively.</p>
+            <img src="./Images/Encoding.png" alt="Encoding Image">
+            
+            <p><b>3. Standardization:</b></p>
+            <p>This scales all numerical features. It ensures all features contribute equally to the analysis.</p>
+            <p>In this project, we use <i>StandardScaler</i> from scikit-learn for standardization.</p>
+            <img src="./Images/Standardization.png" alt="Standardization Image">
+            
+            <p><b>4. Dimensionality Reduction:</b></p>
+            <p>This reduces the number of features while retaining information. It helps with computational costs and improves model performance.</p>
+            <p>In this project, we use Random Forest regressor from scikit-learn. It calculates the importance of each feature based on how it reduces impurity.</p>
+            <img src="./Images/Dimensionality_Reduction.png" alt="Dimensionality Reduction Image">
+            
+            <p><b>5. Removing Outliers:</b></p>
+            <p>Outliers are observations that lie outside the majority range. They can skew analysis and lead to misleading conclusions.</p>
+            <p>We use the Interquartile Range (IQR) technique to detect and remove outliers. IQR = Q3 - Q1, where Q3 is the median of the first half and Q1 is the median of the second half.</p>
+            <p>Points below Q1 - 1.5 * IQR and above Q3 + 1.5 * IQR are treated as outliers.</p>
+            <img src="./Images/Removing_Outliers.png" alt="Removing Outliers Image">
+        </div>
+    </div>
+
+    <div id="fieldModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="showSelection()">&times;</span>
+            <h2>Field Information</h2>
+            <button onclick="showSelection(event)" style="margin-bottom: 20px;">Back</button>
+            <div id="fieldImages" class="image-container"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        function openCircularModal(event) {
+            event.preventDefault(); // Prevent default anchor click behavior
+            const modal = document.getElementById('circularModal');
+            modal.style.display = 'flex'; // Show the circular buttons modal
+        }
+
+        function closeCircularModal() {
+            const modal = document.getElementById('circularModal');
+            modal.style.display = 'none'; // Hide the circular buttons modal
+        }
+
+        function openModal(event) {
+            event.preventDefault(); // Prevent default anchor click behavior
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'flex'; // Show the modal
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'none'; // Hide the modal
+        }
+
+        function buttonAction(step) {
+            const fieldImages = document.getElementById('fieldImages');
+            fieldImages.innerHTML = ''; // Clear previous images
+            let images = [];
+            let infoText = '';
+
+            switch (step) {
+                case 1:
+                    images = ['./Images/Weather_Image1.png', './Images/Weather_Image2.png']; // Update paths
+                    infoText = "<h3>Weather Analysis</h3><p>Detailed information about weather patterns and trends.</p>";
+                    break;
+                case 2:
+                    images = ['./Images/Healthcare_Image1.png', './Images/Healthcare_Image2.png']; // Update paths
+                    infoText = "<h3>Healthcare Insights</h3><p>Exploration of healthcare data and its implications.</p>";
+                    break;
+                case 3:
+                    images = ['./Images/Environment_Image1.png', './Images/Environment_Image2.png']; // Update paths
+                    infoText = "<h3>Environmental Studies</h3><p>Information regarding environmental impact and analysis.</p>";
+                    break;
+                case 4:
+                    images = ['./Images/Market_Image1.png', './Images/Market_Image2.png']; // Update paths
+                    infoText = "<h3>Market Trends</h3><p>Insights into market dynamics and trends.</p>";
+                    break;
+                case 5:
+                    images = ['./Images/Agriculture_Image1.png', './Images/Agriculture_Image2.png']; // Update paths
+                    infoText = "<h3>Agricultural Data</h3><p>Data and analysis related to agricultural practices and trends.</p>";
+                    break;
+            }
+
+            // Create image elements
+            images.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = "Field Image"; // Update alt text as needed
+                fieldImages.appendChild(img);
+            });
+
+            // Add information text
+            fieldImages.insertAdjacentHTML('afterbegin', infoText);
+
+            // Hide the circular modal and show the field modal
+            closeCircularModal();
+            const fieldModal = document.getElementById('fieldModal');
+            fieldModal.style.display = 'flex'; // Show the field information modal
+        }
+
+        function showSelection() {
+            const fieldModal = document.getElementById('fieldModal');
+            fieldModal.style.display = 'none'; // Hide field information modal
+            openCircularModal(event); // Show circular buttons modal again
+        }
+
+        // Close the modal if the user clicks anywhere outside of the modal
+        window.onclick = function(event) {
+            const circularModal = document.getElementById('circularModal');
+            if (event.target === circularModal) {
+                closeCircularModal();
+            }
+            const fieldModal = document.getElementById('fieldModal');
+            if (event.target === fieldModal) {
+                showSelection();
+            }
+            const modal = document.getElementById('myModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+
+</body>
+</html>
