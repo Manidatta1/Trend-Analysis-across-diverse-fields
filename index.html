@@ -6,6 +6,57 @@
     <title>Trend Analysis Across Diverse Fields</title>
     
     <link rel="stylesheet" href="./Main.css">
+
+    <style>
+
+        .modal {
+            display: none;
+            position: fixed; /* Fixed positioning */
+            z-index: 1000; /* High z-index to ensure it is above other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Width of the modal */
+            height: 80%; /* Height auto to fit content */
+            max-height: 80%; /* Limit height */
+            overflow: auto; /* Allow scrolling if content is too tall */
+            position: relative; /* Position relative for close button */
+        }
+
+        .modal-content h1 {
+            text-align: center; /* Center the heading */
+        }
+
+        .modal-content img {
+        display: block;       /* Makes the image a block element */
+        margin: 0 auto;       /* Centers the image horizontally */
+        max-width: 100%;      /* Ensures the image doesn't overflow the container */
+        height: auto;         /* Maintains the aspect ratio of the image */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header class="main-header">
@@ -30,7 +81,7 @@
         </div>
         <div class="option">
             <img src="./Icons/conclusion_icon.jpeg" alt="Conclusion" class="icon">
-            <button onclick="window.location.href='./conclusion.html'">Conclusion</button>
+            <button onclick="openConclusionModal(event)">Conclusion</button>
         </div>
 
         <div class="option">
@@ -51,10 +102,228 @@
         </div>
     </div>
 
+    <div id="myConclusionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConclusionModal()">&times;</span>
+            <h1>Conclusion</h1>
+            <h2><b>Key Insights and Discoveries</b></h2>
+
+            <ul>
+            <li><p><b>Health Care Expenditures:</b></p>
+            <p>Of overall health expenditures by 2025, it predicts a lot of inconsistency across countries. Some of the countries will spend less on health care, relating to the GDP, the developed health infrastructure, and the wider access to some services.
+            Predicted lower expenditures may leave countries struggling to answer the needs of healthcare, implying issues with either bottlenecks in funding or access to services, which can inform global health organizations and policy makers on where to focus financial aid and allocate resources.
+            </p>
+            </li>
+            <img src="./DataModel_images/Health_prediction1.png" alt="Health">
+            <img src="./DataModel_images/Health_prediction2.png" alt="Health">
+
+            <li>
+            <p><b>Malaria Incidence:</b></p>
+            <p>This graph depicts the malaria incidence (per 1,000 population) in different countries in South-East Asia by 2025. Myanmar is expected to record the highest incidence of malaria as compared to the other countries in the region. Such high incidence thus predicts that Myanmar needs to face heavy public health problems related to malaria.
+                Whereas Bangladesh, India, and Indonesia have malaria incidence levels from low to some moderate levels, Bhutan, Nepal, and Sri Lanka almost have zero rates.
+            </p>
+            </li>
+            <img src="./DataModel_images/Health_prediction3.png" alt="Health">
+
+            <li>
+            <p><b>Maize Production:</b></p>
+            <p>China will be looming in huge shadow as the largest anticipated maize producer by 2025 producing more than 250 million tonnes of maize. This suggests that China will dominate the world maize production that can be backed by high-tech agricultural means or through vast areas of farming land.
+                Lastly, India, Brazil, and Mexico account for the significant maize producers, while their estimates are far lower than that of China. This indicates a more extensive global diversity in maize production with these countries working at serious levels to meet growing domestic and international demands.
+                Other Nations: Other countries like Nigeria, Indonesia, Pakistan, Russia, and Ukraine are relatively small producers in the world market regarding their maize production. They contribute significantly at the regional level, but their respective volumes are only a fraction of global production, which is dominated by the top producers.
+                </p>
+
+            </li>
+            <img src="./DataModel_images/Agriculture_prediction1.png" alt="agriculture">
+
+            <li>
+            <p><b>Temperature Predictions for U.S. Cities:</b></p>
+            <p>As per the forecast, Milwaukee will have maximum temperature readings of about 40°C at the beginning of January that will be going down to below 20°C in the closing days of the month. 
+                The predicted minimum temperature starts at around 30°C and similarly drops to nearly 5°C by the end of January. 
+                This pattern suggests that Milwaukee is going to experience a huge temperature drop over the month, with a sharp cooling trend towards the last few days. 
+                In Lander, Maximum temperature readings begin the month at around 30°C but are still declining into early February, cutting off slightly above 10 degrees C at the end.
+                Predicted minimum temperature units start around 20 and nearly finish above 5. 
+                Compared to Milwaukee, Lander is more moderate in terms of a difference of temperatures, since it gradually cools throughout January.
+            </p>
+            </li>
+            <img src="./DataModel_images/Weather_prediction1.png" alt="weather">
+            <img src="./DataModel_images/Weather_prediction2.png" alt="weather">
+
+            <li>
+            <p><b>Greenhouse Gas (GHG) Emissions from Waste:</b></p>
+            <p>Waste emitted forecast is measured in million tonnes of CO2 equivalent for different countries by 2030 as shown on the chart. The most interesting country is Afghanistan which shows a dramatic spike. This could have been caused by shortcomings in waste management or a change in the pattern of waste generation itself. 
+                China and Brazil, along with a few others, are already showing much-proportionate emissions indicative of their contributions to global GHG levels from waste generated in these regions. 
+                For most of the rest, including Germany, Australia, and Canada, they reflect rather moderate and consistent emission levels. This could be due to better waste management systems, or it could even be related to waste emissions themselves.
+            </p>
+            </li>
+            <img src="./DataModel_images/Environment_prediction1.png" alt="Environment">
+
+            <li>
+            <p><b>GDP and Inflation Trends:</b></p>
+            <p>The projected GDP growth rates for G20 countries are illustrated in the graph for 2024.
+                Argentina will lead G20 countries with a forecasted GDP growth rate of over 8%. This indicates some scope for economic recovery or growth through structural reforms or even external influences.
+                Australia will show growth at near-zero, indicating stagnation or slow economic recovery likely associated with either external trade dependency or internal challenges.
+                India and Indonesia show an excellent potential growth above 4%: they find their placement as emerging market-driven economies with vibrant domestic demand and favorable demographic trends.
+                Advanced economies like Germany, Japan, and the United States have nothing but moderate to low growth rates: this reflects a more extended economic cycle with which it is characteristic of developed countries.
+                Argentina has the leading rates of inflation, and there will be a remarkable decline in the year 2023 (almost around 100-up to 2025-around 40 percent). 
+                This means that steps are being taken by Argentina toward stabilizing its economy in a near time period. A phenomenal decline of inflation can be observed under Germany and India from 2023 to 2025, especially Germany, where inflation decreases from about nearly 10% to a little below 5%. 
+                It shows the recovery measures of inflation control policies. The events make Indonesia's peak in inflation in 2024. However, by 2025, improvement begins significantly. Australia and China show moderate fluctuations of inflation that are significantly maintained around the three years. 
+                The United States, United Kingdom, Brazil, and France show a mild trend of inflation with slight reductions ahead in the years.
+                </p>
+            </li>
+            <img src="./DataModel_images/Market_prediction1.png" alt="Market">
+            <img src="./DataModel_images/Market_prediction2.png" alt="Market">
+
+
+            <li>
+            <p><b>Food Supply per Capita:</b></p>
+            <p> Thus Mexico, by 2025, is forecasted to have the most food supply per person of over 30 kg. This would either mean very strong domestic agricultural production or a well-functioning system of food imports, able to fulfil high per head requirements. 
+                Brazil and China would show similar levels of 15-20 kg per person toward per capita food supply. Both countries are ranked high in food production, but per capita food supply results comparatively would be lower, given vast amounts of population. 
+                India and Nigeria would have very low availability of foods per capita since their population densities would be significantly high compared to what food production could supply. Both countries, while being large in terms of volume produced as food suppliers, still yield modest availability per capita.
+            </p>
+            </li>
+            <img src="./DataModel_images/Agriculture_prediction2.png" alt="agriculture">
+            </ul>
+
+            <h2>Significance of Findings:</h2>
+
+            <ul>
+
+            <li>
+            <p><b>Health Care Expenditures:</b></p>
+            <p>Such predictions can go a long way in highlighting potential shortfalls in healthcare financing and informing governments and international organizations about regions that require additional support and intervention. Policy reforms can be drawn up to deal with access to health care and funding gaps.
+            </p>
+            </li>
+
+            <li>
+            <p><b>Malaria Incidence:</b></p>
+            <p>In Myanmar, the burden of malaria as seen through incidence data would necessitate implementing strategic public health interventions, mainly in the high-risk settings. The critical findings will feed directly into the health bodies like WHO, who would be looking forward towards timely directing the resources and customizing programs on malaria eradication.
+            </p>
+            </li>
+
+            <li>
+            <p><b>Maize Production:</b></p>
+            <p>Thus, they have become critical sources of maize supply to the rest of the world that is heavily dependent on countries such as China, India, and Brazil. Catastrophes that would disrupt any of these regions, for example, an event due to climate change or even civil unrest or political instability, could throw the world's maize supply into considerable disarray.</p>
+            </li>
+
+            <li>
+            <p><b>Temperature Predictions for U.S. Cities:</b></p>
+            <p> Temperature predictions profoundly impact both urban planning and energy consumption forecasting. Further, Milwaukee and the other northern cities must make improvements in infrastructure to compensate for heating and power grid modifications due to the anticipated temperature declines.
+            </p>
+            </li>
+
+            <li>
+            <p><b>GHG Emissions from Waste:</b></p>
+            <p>Hefty waste emissions, especially in Afghanistan, China, and Brazil, demonstrate a need for improved waste management technologies and recycling systems in these nations for the reduction of greenhouse gases. To meet the international climate targets that could be addressed by those systems, there must be huge investments in waste-to-energy and methane capture technologies.
+            </p>
+            </li>
+            
+            <li>
+            <p><b>GDP and Inflation Trends:</b></p>
+            <p>Government ministers take note of projected economic growth rates and inflation trends so that appropriate fiscal adjustments can be made. They also manage public spending and set interest rates as a function of these assessments. Furthermore, they indicate that the distribution of economic power is shifting in favor of emerging markets, where new opportunities for investment will be presented.
+            </p>
+            </li>
+
+            <li>
+            <p><b>Food Supply per Capita:</b></p>
+            <p>This has exposed the inadequacy of food supply available on a per capita basis with implications for food security, especially in countries with high population densities like India and Nigeria. These findings call for better food distribution and improved agricultural productivity.</p>
+            </li>
+            </ul>
+
+            <h2>What Can Be Improved in the Future:</h2>
+
+            <ul>
+            <li>
+            <p><b>Health Care Expenditures:</b></p>
+            <p>More disaggregated information-factors like disease incidence, age structure, and healthcare infrastructure quality-could be useful to future constructors. An all-embracing approach would be a good picture of the relevant factors influencing expenditure on healthcare and could make the predictions sharper for allocation prep.</p>
+            </li>
+
+            <li>
+            <p><b>Malaria Incidence:</b></p>
+            <p>Granular data such as incidence in urban versus rural areas, seasonal variations, and access would further help improve malaria prediction. Increased expansion in coverage of countries beyond South-East Asia would also provide global insights into malaria risks</p>
+            </li>
+
+            <li>
+            <p><b>Maize Production:</b></p>
+            <p> Incorporating environmental factors, such as the impacts of climate change and more refined data at the regional level, would further fine-tune the predictions for maize yields. Improved models could evaluate how extreme weather events or changes in agricultural practices would affect maize production in the region of interest.</p>
+            </li>
+
+            <li>
+            <p><b>Temperature Predictions for U.S. Cities:</b></p>
+            <p>Forthcoming models could include additional factors such as El Niño or La Niña phenomena to improve long-term temperature forecasting. A more specific model-individual temperature predictions at the neighborhood or district level-may refine it further in terms of infrastructure and energy planning.</p>
+            </li>
+
+            <li>
+            <p><b>GHG Emissions from Waste:</b></p>
+            <p>Such further classifications on the waste types like industrial, municipal, and agricultural could contribute towards more accurate emission forecasts. Adoption of new and innovative technologies for waste management, such as advanced recycling systems and waste-to-energy systems, would be effective avenues for high-emission contribution countries in reducing their general emissions.</p>
+            </li>
+
+            <li>
+            <p><b>GDP and Inflation Trends:</b></p>
+            <p>Amendment of the growth data relative to specific sectors with some external influence, for example, geopolitics and natural disasters, will serve to improve the precision of economic predictions. Such external shocks' impact on inflation and GDP growth inclusion would also help to fine-tune the design of fiscal and monetary policies.</p>
+            </li>
+
+            <li>
+            <p><b>Food Supply per Capita:</b></p>
+            <p>Future models may encapsulate climate change impacts on food production along with spatial variations in agricultural practices. A more careful assessment of food distribution systems and local infrastructure would lead to insights on particular regions that are food-insecure; in turn, these would pay way for targeted action.</p>
+            </li>
+            </ul>
+
+
+            <h2>Potential Use Cases:</h2>
+            <ul>
+            <li>
+            <p><b>Health Care Expenditures:</b></p>
+            <p>Such predictions can help in deciding government budget allocations for proper planning in health services, infrastructure development, and allocation of resources in underfunded regions. Global health organizations can plan their financial assistance and healthcare programs based on these forecasts.
+            </p>
+            </li>
+
+            <li>
+            <p><b>Malaria Incidence:</b></p>
+            <p>These tips would help governments and international organizations prioritize their malaria control programs, allocate resources, and implement preventive measures. Targeted interventions in high-incidence areas would improve health outcomes.</p>
+            </li>
+
+            <li>
+            <p><b>Maize Production:</b></p>
+            <p>These forecasts could be applied by governments and trade organizations to design policies on trade that would help in stabilizing the global maize market, as well as planning agricultural investments. Such findings would be useful to international organizations such as the World Food Programme in targeting aid for countries with lower maize production.</p>
+            </li>
+
+            <li>
+            <p><b>Temperature Predictions for U.S. Cities:</b></p>
+            <p> Forecasting helps energy companies manage heating resource allocations and prices. Forecasting also helps local governments prepare for infrastructure enhancements, for instance in cold snap regions, to ensure safe and comfortable community living conditions.</p>
+            </li>
+
+            <li>
+            <p><b>GHG Emissions from Waste:</b></p>
+            <p>Such insights would help develop waste-management strategies and use some advanced technologies by high emission countries to meet global climate commitments. Those environmental organizations can thus prioritize high-emission areas for intervention and support.</p>
+            </li>
+
+            <li>
+            <p><b>GDP and Inflation Trends:</b></p>
+            <p>Importantly, those forecasts will enable policymakers to adapt fiscal and monetary policies, joint interest rate-setting, and the allocation of funds. They can also act as the basis for emerging-market-targeted investment strategies with an aim to raise the bar of an economy's growth potential. Furthermore, public policies would help design expatriation, taking into consideration export-maximizing measures and minimization of inflationary tensions.</p>
+            </li>
+
+            <li>
+            <p><b>Food Supply per Capita: </b></p>
+            <p> These ideas can be useful for governments when devising policies regarding how best to improve food distribution, agricultural production, and food security. International organizations can then direct their intervention in favor of a country dealing with the worst challenges in food insecurity toward improving the livelihoods of its vulnerable populations.</p>
+            </li>
+            </ul>
+        </div>
+    </div>
+
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
+        }
+        function openConclusionModal(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const modal = document.getElementById("myConclusionModal");
+            modal.style.display = "flex"; // Show the modal
+        }
+
+        function closeConclusionModal(){
+            const modal = document.getElementById("myConclusionModal");
+            modal.style.display = "none"; // Hide the modal
         }
     </script>
 
